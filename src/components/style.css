@@ -1,0 +1,36 @@
+.openedCell {
+    background-color: lightblue;
+    color: black;
+    font-weight: bold;
+}
+.closedCell {
+    background-color:cadetblue;
+}
+.flexBox{
+    display: flex;
+    height:fit-content;
+    padding: auto;
+    align-items: center;
+}
+.stateIcon{
+    font-size: 25px;
+    cursor: pointer;
+}
+p{
+    cursor:default;
+}
+/* select{
+    height: fit-content;
+    padding: 3px;
+    background-color: dodgerblue;
+    color: white;
+    font-weight: bold;
+}
+option{
+    
+    height: fit-content;
+    margin: 5px;
+    background-color: dodgerblue;
+    color: white;
+    font-weight: bold;
+} */

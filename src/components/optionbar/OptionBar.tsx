@@ -1,22 +1,18 @@
-import React, { Component } from "react";
-import { Container } from "../style";
+import { OptionWrapper } from "../style";
 import {LEVEL} from '../../constants'
 import { connect, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { createDummy } from "../gameboard/boardSlice";
-
-interface optionProp{
-    isClicked: boolean;
-}
+import "../style.css"
 
 const OptionBar = ()  => {
   const dispatch = useDispatch()
   const boardObj = useSelector((state:RootState) => state.board)
 
   const onLevelChange = (e:any) => {
-    if(e.target.id === 'B') dispatch(createDummy(LEVEL.BEGINNER));
-    else if(e.target.id === 'I') dispatch(createDummy(LEVEL.INTERMEDIATE));
-    else if(e.target.id === 'E') dispatch(createDummy(LEVEL.EXPERT));
+    if(e.target.value === 'B') dispatch(createDummy(LEVEL.BEGINNER));
+    else if(e.target.value === 'I') dispatch(createDummy(LEVEL.INTERMEDIATE));
+    else if(e.target.value === 'E') dispatch(createDummy(LEVEL.EXPERT));
   }
   const onClickIcon = () => {
     // reset Game
@@ -28,13 +24,20 @@ const OptionBar = ()  => {
   }
 
   return (
-      <div>
-          <button id='B' onClick={onLevelChange}>Beginener</button>
-          <button id='I' onClick={onLevelChange}>Intermediate</button>
-          <button id='E' onClick={onLevelChange}>Expert</button>
-          <p onClick={onClickIcon}>{stateIcon}</p>
-          <p className="timer"></p>
-      </div>
+      <OptionWrapper>
+        <div className="flexBox">
+          <p>Level:&nbsp;&nbsp;</p>
+          <select onChange={(e) =>onLevelChange(e)}>
+            <option value='B'>Beginner</option>
+            <option value='I'>Intermediate</option>
+            <option value='E'>Expert</option>
+          </select>
+        </div>
+        
+        <p className="stateIcon" onClick={onClickIcon}>{stateIcon}</p>
+
+        <p className="timer"></p>
+      </OptionWrapper>
   );
 };
 

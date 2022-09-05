@@ -1,6 +1,6 @@
 import {createSlice, nanoid} from "@reduxjs/toolkit"
 import {dummyMines, setRandomMines, getCellValue, setClickedCells} from "./utils";
-import {LEVEL} from '../../constants'
+import {LEVEL, EMPTYTEXT} from '../../constants'
 
 interface Cell {
     text: string,
@@ -54,12 +54,11 @@ export const boardSlice = createSlice ({
                 if(obj.cellType === 'openedCell') openedCount++;
             }
             state.opened = openedCount;
-            console.log(state.opened)
         },
         toggleFlag(state, action){
             const key = action.payload;
-            if(state.cells[key].text === '') state.cells[key].text = '🚩';
-            else state.cells[key].text = ''
+            if(state.cells[key].text === EMPTYTEXT) state.cells[key].text = '🚩';
+            else state.cells[key].text = EMPTYTEXT
         }
     }
 })

@@ -1,10 +1,12 @@
+import {MINE, EMPTYTEXT} from '../../constants'
+
+
 export interface Cell {
     text: string,
     cellType: string,
     isFirst: boolean,
     state: number,
 }
-const MINE = -1;
 
 export const getCellValue = (obj:{[key:string]:Cell}, row:number, col:number) => {
     const key = `${row},${col}`
@@ -18,7 +20,7 @@ export const dummyMines = (row:number, col:number, mineCont: number) => {
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
-            obj[`${i},${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
+            obj[`${i},${j}`] = {text:EMPTYTEXT, cellType:'closedCell', isFirst: true, state: 0} as Cell;
             count++;
         }
     }
@@ -32,7 +34,7 @@ export const setRandomMines = (row:number, col:number, mineCont: number, thisKey
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
-            obj[`${i},${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
+            obj[`${i},${j}`] = {text:EMPTYTEXT, cellType:'closedCell', isFirst: true, state: 0} as Cell;
         }
     }
 
@@ -87,7 +89,7 @@ export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: num
         else if (cellObj[key].state === 0 ){
             cellObj[key].cellType = 'openedCell';
     
-            if (cellObj[key].text !== '') cellObj[key].text = ''    // text still blank because state 0 means...
+            if (cellObj[key].text !== EMPTYTEXT) cellObj[key].text = EMPTYTEXT    // text still blank because state 0 means...
             opened++;
                 
             for (let i = -1; i <=1; i++){ // open cells recursively

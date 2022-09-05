@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {Board, OptionBar} from './components';
-import { Canvas, Wrapper, Title } from './style';
+import { Canvas, Wrapper, Title } from './AppStyle';
 
 
 class App extends Component {

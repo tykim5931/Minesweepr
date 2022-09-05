@@ -6,6 +6,7 @@ import { RootState } from "../../app/store";
 import { CellContainer , BoardContainer} from "../style";
 import { cellClicked, createMines, toggleFlag} from "./boardSlice";
 import OptionBar from "../optionbar/OptionBar";
+import "../style.css"
 
 interface Cell {
   text: string,

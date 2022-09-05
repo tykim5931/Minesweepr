@@ -22,7 +22,6 @@ export const dummyMines = (row:number, col:number, mineCont: number) => {
             count++;
         }
     }
-    console.log(count)
     return obj;
 }
 
@@ -68,7 +67,6 @@ export const setRandomMines = (row:number, col:number, mineCont: number, thisKey
             }
         }
     }
-    console.log (obj);
     return obj;
 }
 
@@ -76,7 +74,6 @@ export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: num
     const cellObj = obj;
     const row = parseInt(key.split(',')[0], 10);
     const col = parseInt(key.split(',')[1], 10);
-    console.log(key);
     
     // if cell state == number : expose number when clicked
     if(cellObj[key].cellType !== 'openedCell'){
@@ -89,7 +86,8 @@ export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: num
         // if cell state == 0 : open all related cells without mines
         else if (cellObj[key].state === 0 ){
             cellObj[key].cellType = 'openedCell';
-            // text still blank because state 0 means...
+    
+            if (cellObj[key].text !== '') cellObj[key].text = ''    // text still blank because state 0 means...
             opened++;
                 
             for (let i = -1; i <=1; i++){ // open cells recursively

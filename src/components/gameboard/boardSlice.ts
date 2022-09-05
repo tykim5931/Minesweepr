@@ -48,8 +48,13 @@ export const boardSlice = createSlice ({
             const key = action.payload;
             const {cellObj, opened} = setClickedCells(state.cells, key, state.opened);
             state.cells = cellObj;
-            state.opened = opened;
             if(opened < 0) state.gameEnd = true;
+            let openedCount = 0;
+            for (const [key, obj] of Object.entries(cellObj)){
+                if(obj.cellType === 'openedCell') openedCount++;
+            }
+            state.opened = openedCount;
+            console.log(state.opened)
         },
         toggleFlag(state, action){
             const key = action.payload;

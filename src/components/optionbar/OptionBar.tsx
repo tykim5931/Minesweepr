@@ -22,13 +22,18 @@ const OptionBar = ()  => {
     // reset Game
     dispatch(createDummy(boardObj.level));
   }
+  let stateIcon = boardObj.gameEnd? '😓': '😶';
+  if (boardObj.opened >= boardObj.level[0]*boardObj.level[1]-boardObj.level[2]-1) { // if opened >= row*col - mines
+    stateIcon = '😄';
+  }
 
   return (
       <div>
           <button id='B' onClick={onLevelChange}>Beginener</button>
           <button id='I' onClick={onLevelChange}>Intermediate</button>
           <button id='E' onClick={onLevelChange}>Expert</button>
-          <p onClick={onClickIcon}>{boardObj.gameEnd? '😓': '😄'}</p>
+          <p onClick={onClickIcon}>{stateIcon}</p>
+          <p className="timer"></p>
       </div>
   );
 };

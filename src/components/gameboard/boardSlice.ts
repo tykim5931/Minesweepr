@@ -14,6 +14,8 @@ interface BoardProps {
     opened: number,
     cells: {[key:string]:Cell},
     gameEnd: boolean,
+    startTime: number,
+    gameOverTime: number,
 }
 const initialState: BoardProps= {
     isInit: true,
@@ -21,6 +23,8 @@ const initialState: BoardProps= {
     opened: 0,
     cells: dummyMines(8, 8, 10), //setRandomMines(8, 8, 10),
     gameEnd: false,
+    startTime: 0,
+    gameOverTime: 0,
 };
 
 export const boardSlice = createSlice ({
@@ -35,6 +39,8 @@ export const boardSlice = createSlice ({
             state.gameEnd = false;
             state.isInit = true;
             state.opened = 0;
+            state.startTime= 0;
+            state.gameOverTime= 0;
         },
         createMines(state, action) {
             const {level, thisKey} = action.payload;
@@ -48,7 +54,10 @@ export const boardSlice = createSlice ({
             const key = action.payload;
             const {cellObj, opened} = setClickedCells(state.cells, key, state.opened);
             state.cells = cellObj;
-            if(opened < 0) state.gameEnd = true;
+            if(opened < 0) {
+                state.gameEnd = true;
+                state.gameOverTime = Date.now();
+            }
             let openedCount = 0;
             for (const [key, obj] of Object.entries(cellObj)){
                 if(obj.cellType === 'openedCell') openedCount++;
@@ -59,10 +68,17 @@ export const boardSlice = createSlice ({
             const key = action.payload;
             if(state.cells[key].text === EMPTYTEXT) state.cells[key].text = '🚩';
             else state.cells[key].text = EMPTYTEXT
+        },
+        setStartTime(state, action){
+            state.startTime = action.payload;
+        },
+        setGameOver(state, action){
+            state.gameEnd = true;
+            state.gameOverTime = action.payload;
         }
     }
 })
 
-export const {createMines, cellClicked, createDummy, toggleFlag} = boardSlice.actions;
+export const {createMines, cellClicked, createDummy, toggleFlag, setStartTime, setGameOver} = boardSlice.actions;
 
 export default boardSlice.reducer;

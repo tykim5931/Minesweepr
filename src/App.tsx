@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
-import {Settings, Board, Status} from './containers';
+import Board from './components/gameboard/Board';
 import { Canvas, Wrapper, Title } from './style';
 
 
-function App() {
-  return (
-    <Canvas>
-      <Wrapper>
-        <Title>MineSweeper</Title>
-        <Settings></Settings>
-        <Board></Board>
-        <Status></Status>
-      </Wrapper>
-    </Canvas>
-  );
+class App extends Component {
+  render(): React.ReactNode {
+    return (
+      <Canvas>
+        <Wrapper>
+          <Title>MineSweeper</Title>
+          <Board></Board>
+        </Wrapper>
+      </Canvas>
+    );
+  }
 }
 
 export default App;

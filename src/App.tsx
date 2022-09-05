@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './index.css';
 import {Board, OptionBar} from './components';
 import { Canvas, Wrapper, Title } from './AppStyle';
 

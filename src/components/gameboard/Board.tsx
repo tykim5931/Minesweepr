@@ -4,7 +4,7 @@ import {MINE} from '../../constants'
 import { connect, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { CellContainer , BoardContainer} from "../style";
-import { cellClicked, createMines } from "./boardSlice";
+import { cellClicked, createMines, toggleFlag} from "./boardSlice";
 import OptionBar from "../optionbar/OptionBar";
 
 interface Cell {
@@ -19,10 +19,7 @@ const Board = () => {
 
   const boardObj = useSelector((state:RootState) => state.board)
   
-  let isClicked:boolean = false;
   const onCellClicked = (e:any) => {
-    isClicked = true;
-    console.log(isClicked)
     if(boardObj.gameEnd === true) {
       // inform that game has ended, do nothing.
       return;
@@ -31,6 +28,14 @@ const Board = () => {
       dispatch(createMines({level: boardObj.level, thisKey: e.target.id}));
     }
     dispatch(cellClicked( e.target.id ));
+  }
+
+  const onFlagSet = (e:any) => {
+    e.preventDefault();
+    if(boardObj.isInit === true || boardObj.gameEnd === true) return;
+    const key = e.target.id;
+    if (boardObj.cells[key].cellType === 'openedCell') return;
+    else dispatch(toggleFlag( key ));
   }
 
   const renderObj = () => {
@@ -48,6 +53,7 @@ const Board = () => {
           className={boardObj.cells[key].cellType}
           key={key}
           onClick={onCellClicked}
+          onContextMenu={onFlagSet}
         >
           {boardObj.cells[key].text}
         </CellContainer>

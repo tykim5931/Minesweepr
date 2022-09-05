@@ -50,10 +50,15 @@ export const boardSlice = createSlice ({
             state.cells = cellObj;
             state.opened = opened;
             if(opened < 0) state.gameEnd = true;
+        },
+        toggleFlag(state, action){
+            const key = action.payload;
+            if(state.cells[key].text === '') state.cells[key].text = '🚩';
+            else state.cells[key].text = ''
         }
     }
 })
 
-export const {createMines, cellClicked, createDummy} = boardSlice.actions;
+export const {createMines, cellClicked, createDummy, toggleFlag} = boardSlice.actions;
 
 export default boardSlice.reducer;

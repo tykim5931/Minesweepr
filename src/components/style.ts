@@ -10,11 +10,15 @@ export const Container = styled.div`
     width: 60%;
     cursor: default;
 `;
-export const OptionWrapper = styled.div`
+export const OptionWrapper = styled.div <{rowCount:number}>`
 display: flex;
 flex-wrap: wrap;
-justify-content: center;
+vertical-align: top;
+justify-content: space-between;
+height: 50px;
 margin: 10px auto 0 auto;
+width: ${({rowCount}) => rowCount*( CELL_SIZE + (CELL_MARGIN+1) * 2)}px;
+min-width: 300px;
 `;
 export const CellContainer = styled.div`
     display: inline-block;

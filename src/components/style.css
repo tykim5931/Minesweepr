@@ -8,29 +8,25 @@
 }
 .flexBox{
     display: flex;
+    width:fit-content;
     height:fit-content;
     padding: auto;
     align-items: center;
 }
 .stateIcon{
-    font-size: 25px;
+    font-size: 20px;
     cursor: pointer;
+    width: fit-content;
 }
 p{
     cursor:default;
 }
-/* select{
-    height: fit-content;
-    padding: 3px;
-    background-color: dodgerblue;
-    color: white;
+.timer{
     font-weight: bold;
 }
+select{
+    position:fixed;
+}
 option{
-    
-    height: fit-content;
-    margin: 5px;
-    background-color: dodgerblue;
-    color: white;
-    font-weight: bold;
-} */
+    position:fixed;
+}

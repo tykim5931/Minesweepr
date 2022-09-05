@@ -33,15 +33,13 @@ const OptionBar = ({time}:{time:string})  => {
   }
 
   return (
-      <OptionWrapper>
-        <div className="flexBox">
-          <p>Level:&nbsp;&nbsp;</p>
+      <OptionWrapper rowCount={boardObj.level[1]}>
+          <p>Level</p>
           <select onChange={(e) =>onLevelChange(e)}>
             <option value='B'>Beginner</option>
             <option value='I'>Intermediate</option>
             <option value='E'>Expert</option>
           </select>
-        </div>
         
         <p className="stateIcon" onClick={onClickIcon}>{stateIcon}</p>
 

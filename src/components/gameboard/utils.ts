@@ -105,8 +105,13 @@ export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: num
         }
         // if cell state == MINE
         else {
-            cellObj[key].text = String("🔥");
-            opened++;
+            cellObj[key].text = "🔥";
+            for (const [key, obj] of Object.entries(cellObj)){
+                if(obj.state === MINE){
+                    obj.text = "🔥";
+                }
+            }
+            opened = -1;    // this means the game is over!!
         }
     }
     return {cellObj, opened};

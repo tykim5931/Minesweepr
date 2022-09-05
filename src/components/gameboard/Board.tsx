@@ -5,6 +5,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { CellContainer , BoardContainer} from "../style";
 import { cellClicked, createMines } from "./boardSlice";
+import OptionBar from "../optionbar/OptionBar";
 
 interface Cell {
   text: string,
@@ -18,7 +19,14 @@ const Board = () => {
 
   const boardObj = useSelector((state:RootState) => state.board)
   
+  let isClicked:boolean = false;
   const onCellClicked = (e:any) => {
+    isClicked = true;
+    console.log(isClicked)
+    if(boardObj.gameEnd === true) {
+      // inform that game has ended, do nothing.
+      return;
+    }
     if(boardObj.isInit === true) {
       dispatch(createMines({level: boardObj.level, thisKey: e.target.id}));
     }
@@ -47,10 +55,12 @@ const Board = () => {
     })
   }
   return (
-      // rowWidth = number of columns
+    <div>
+      <OptionBar></OptionBar>
       <BoardContainer rowCount={boardObj.level[1]}>
           {renderObj()}
       </BoardContainer>
+    </div>
   );
 };
 

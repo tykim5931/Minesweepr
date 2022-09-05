@@ -10,7 +10,6 @@ class App extends Component {
       <Canvas>
         <Wrapper>
           <Title>MineSweeper</Title>
-          <OptionBar></OptionBar>
           <Board></Board>
         </Wrapper>
       </Canvas>

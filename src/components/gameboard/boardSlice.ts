@@ -13,14 +13,14 @@ interface BoardProps {
     level: number[],
     opened: number,
     cells: {[key:string]:Cell},
-    isStopGame: boolean,
+    gameEnd: boolean,
 }
 const initialState: BoardProps= {
     isInit: true,
     level: LEVEL.BEGINNER,
     opened: 0,
     cells: dummyMines(8, 8, 10), //setRandomMines(8, 8, 10),
-    isStopGame: false,
+    gameEnd: false,
 };
 
 export const boardSlice = createSlice ({
@@ -32,7 +32,7 @@ export const boardSlice = createSlice ({
             const [rowSize, colSize, mineCount] = state.level
             const newCells = dummyMines(rowSize, colSize, mineCount);
             state.cells = newCells;
-            state.isStopGame = false;
+            state.gameEnd = false;
             state.isInit = true;
             state.opened = 0;
         },
@@ -49,6 +49,7 @@ export const boardSlice = createSlice ({
             const {cellObj, opened} = setClickedCells(state.cells, key, state.opened);
             state.cells = cellObj;
             state.opened = opened;
+            if(opened < 0) state.gameEnd = true;
         }
     }
 })

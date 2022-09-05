@@ -38,7 +38,7 @@ const Board = () => {
     })
   }
   return (
-      <BoardContainer rowCount={8}>
+      <BoardContainer rowCount={boardObj.rowSize}>
           {renderObj()}
       </BoardContainer>
   );

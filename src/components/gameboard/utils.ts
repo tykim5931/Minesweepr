@@ -7,19 +7,22 @@ export interface Cell {
 const MINE = -1;
 
 export const getCellValue = (obj:{[key:string]:Cell}, row:number, col:number) => {
-    const key = `${row}${col}`
+    const key = `${row},${col}`
     if(obj[key] === undefined) return 'out-of-range';
     else return obj[key].state;
 }
 
 export const dummyMines = (row:number, col:number, mineCont: number) => {
     // map 생성
+    let count = 0
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
-            obj[`${i}${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
+            obj[`${i},${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
+            count++;
         }
     }
+    console.log(count)
     return obj;
 }
 
@@ -28,7 +31,7 @@ export const setRandomMines = (row:number, col:number, mineCont: number) => { //
     // map 생성
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
-            obj[`${i}${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
+            obj[`${i},${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
         }
     }
 
@@ -38,8 +41,8 @@ export const setRandomMines = (row:number, col:number, mineCont: number) => { //
     while(placedMines < mineCont){
         randomRow = Math.floor(Math.random() * row);
         randomCol = Math.floor(Math.random() * col);
-        if (obj[`${randomRow}${randomCol}`].state === 0){
-            obj[`${randomRow}${randomCol}`].state = MINE;
+        if (obj[`${randomRow},${randomCol}`].state === 0){
+            obj[`${randomRow},${randomCol}`].state = MINE;
             placedMines++;
         }
     }
@@ -48,12 +51,12 @@ export const setRandomMines = (row:number, col:number, mineCont: number) => { //
     for (let i=0; i < row; i++){
         for (let j=0; j<col; j++){
             // Mine인 경우 주변 탐색 후 숫자 업데이트
-            if(obj[`${i}${j}`].state === MINE){
+            if(obj[`${i},${j}`].state === MINE){
                 for(let ii=-1; ii<=1; ii++){
                     for(let jj=-1; jj<=1; jj++){
                       if(ii!==0 || jj!==0){ // 자신 제외
                         if(getCellValue(obj, i+ii,j+jj) !== MINE && getCellValue(obj, i+ii,j+jj) !== 'out-of-range'){
-                          obj[`${i+ii}${j+jj}`].state++;
+                          obj[`${i+ii},${j+jj}`].state++;
                         }
                       }
                     }
@@ -67,8 +70,9 @@ export const setRandomMines = (row:number, col:number, mineCont: number) => { //
 
 export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: number) => {
     const cellObj = obj;
-    const row = parseInt(key[0], 10);
-    const col = parseInt(key[1], 10);
+    const row = parseInt(key.split(',')[0], 10);
+    const col = parseInt(key.split(',')[1], 10);
+    console.log(key);
     
     // if cell state == number : expose number when clicked
     if(cellObj[key].cellType !== 'openedCell'){
@@ -89,8 +93,7 @@ export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: num
                     if(i!==0 || j!==0){
                         const cellVal = getCellValue(cellObj, row+i, col+j)
                         if (cellVal !== MINE && cellVal !== 'out-of-range'){
-                            console.log(`${row+i}${col+j}`)
-                            setClickedCells (cellObj,`${row+i}${col+j}`, opened)
+                            setClickedCells (cellObj,`${row+i},${col+j}`, opened)
                         }
                     }
                 }

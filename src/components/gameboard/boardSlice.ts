@@ -9,13 +9,15 @@ interface Cell {
     state: number,
 }
 interface BoardProps {
+    rowSize: number,
     opened: number,
     cells: {[key:string]:Cell},
     isStopGame: boolean,
 }
 const initialState: BoardProps= {
+    rowSize: 8,
     opened: 0,
-    cells: setRandomMines(8, 8, 10),//dummyMines(8, 8, 10),
+    cells: dummyMines(8, 8, 10), //setRandomMines(8, 8, 10),
     isStopGame: false,
 };
 
@@ -23,6 +25,12 @@ export const boardSlice = createSlice ({
     name: 'board',
     initialState,
     reducers:{
+        createDummy(state, action){
+            const {rowSize, colSize, mineCount} = action.payload;
+            const newCells = dummyMines(rowSize, colSize, mineCount);
+            state.rowSize = rowSize
+            state.cells = newCells;
+        },
         createBoard(state, action) {
             const {rowSize, colSize, mineCount} = action.payload;
             const newCells = setRandomMines(rowSize, colSize, mineCount);
@@ -37,6 +45,6 @@ export const boardSlice = createSlice ({
     }
 })
 
-export const {createBoard, cellClicked} = boardSlice.actions;
+export const {createBoard, cellClicked, createDummy} = boardSlice.actions;
 
 export default boardSlice.reducer;

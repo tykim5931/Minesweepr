@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const CELL_SIZE = 10;
-const CELL_MARGIN = 10;
+const CELL_SIZE = 20;
+const CELL_MARGIN = 1;
 export const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -15,15 +15,15 @@ export const CellContainer = styled.div`
     justify-content: center;
 	text-align: center;
 	align-items: center;
-    padding: ${CELL_MARGIN/2}px ${CELL_MARGIN}px ${CELL_MARGIN/2}px ${CELL_MARGIN}px;
+	margin: ${CELL_MARGIN}px;
     width: ${CELL_SIZE}px;
-    height: ${CELL_SIZE*2}px;
+    height: ${CELL_SIZE}px;
 	border: solid 1px white;
 `;
-export const BoardContainer = styled.table <{rowCount:number}>`
+export const BoardContainer = styled.div <{rowCount:number}>`
 	display: inline-block;
 	felx-wrap: wrap;
 	justify-content: center;
 	margin: 10px auto 0 auto;
-	width: ${({rowCount}) => rowCount*(5+ CELL_SIZE + CELL_MARGIN * 2)}px
+	width: ${({rowCount}) => rowCount*( CELL_SIZE + (CELL_MARGIN+1) * 2)}px
 `;

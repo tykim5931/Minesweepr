@@ -1,6 +1,6 @@
 export interface Cell {
     text: string,
-    classList: string,
+    cellType: string,
     isFirst: boolean,
     state: number,
 }
@@ -17,7 +17,7 @@ export const dummyMines = (row:number, col:number, mineCont: number) => {
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
-            obj[`${i}${j}`] = {text:'', classList:'cell', isFirst: true, state: 0} as Cell;
+            obj[`${i}${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
         }
     }
     return obj;
@@ -28,11 +28,10 @@ export const setRandomMines = (row:number, col:number, mineCont: number) => { //
     // map 생성
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
-            obj[`${i}${j}`] = {text:'', classList:'cell', isFirst: true, state: 0} as Cell;
+            obj[`${i}${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
         }
     }
 
-    
     // mineCount 만큼의 지뢰를 random 좌표에 뿌림.
     let placedMines = 0;
     let randomRow, randomCol;
@@ -64,4 +63,44 @@ export const setRandomMines = (row:number, col:number, mineCont: number) => { //
     }
     console.log (obj);
     return obj;
+}
+
+export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: number) => {
+    const cellObj = obj;
+    const row = parseInt(key[0], 10);
+    const col = parseInt(key[1], 10);
+    
+    // if cell state == number : expose number when clicked
+    if(cellObj[key].cellType !== 'openedCell'){
+
+        if (cellObj[key].state > 0){
+            cellObj[key].cellType = 'openedCell';
+            cellObj[key].text = String(cellObj[key].state);
+            opened++;
+        }
+        // if cell state == 0 : open all related cells without mines
+        else if (cellObj[key].state === 0 ){
+            cellObj[key].cellType = 'openedCell';
+            // text still blank because state 0 means...
+            opened++;
+                
+            for (let i = -1; i <=1; i++){ // open cells recursively
+                for(let j = -1; j<=1; j++){
+                    if(i!==0 || j!==0){
+                        const cellVal = getCellValue(cellObj, row+i, col+j)
+                        if (cellVal !== MINE && cellVal !== 'out-of-range'){
+                            console.log(`${row+i}${col+j}`)
+                            setClickedCells (cellObj,`${row+i}${col+j}`, opened)
+                        }
+                    }
+                }
+            }
+        }
+        // if cell state == MINE
+        else {
+            cellObj[key].text = String("🔥");
+            opened++;
+        }
+    }
+    return {cellObj, opened};
 }

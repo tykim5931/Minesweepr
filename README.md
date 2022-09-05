@@ -5,7 +5,10 @@
 ### Install & Execute
 ```
 git clone https://github.com/tykim5931/Minesweepr.git
-cd minesweeper
+or download zip
+```
+```
+cd Minesweepr-main
 npm install
 npm start
 ```

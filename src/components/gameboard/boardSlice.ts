@@ -1,6 +1,6 @@
 import {createSlice, nanoid} from "@reduxjs/toolkit"
 import {dummyMines, setRandomMines, getCellValue, setClickedCells} from "./utils";
-import {MINE} from '../../constants'
+import {LEVEL} from '../../constants'
 
 interface Cell {
     text: string,
@@ -9,13 +9,15 @@ interface Cell {
     state: number,
 }
 interface BoardProps {
-    rowSize: number,
+    isInit: boolean,
+    level: number[],
     opened: number,
     cells: {[key:string]:Cell},
     isStopGame: boolean,
 }
 const initialState: BoardProps= {
-    rowSize: 8,
+    isInit: true,
+    level: LEVEL.BEGINNER,
     opened: 0,
     cells: dummyMines(8, 8, 10), //setRandomMines(8, 8, 10),
     isStopGame: false,
@@ -26,15 +28,21 @@ export const boardSlice = createSlice ({
     initialState,
     reducers:{
         createDummy(state, action){
-            const {rowSize, colSize, mineCount} = action.payload;
+            state.level = action.payload;
+            const [rowSize, colSize, mineCount] = state.level
             const newCells = dummyMines(rowSize, colSize, mineCount);
-            state.rowSize = rowSize
             state.cells = newCells;
+            state.isStopGame = false;
+            state.isInit = true;
+            state.opened = 0;
         },
-        createBoard(state, action) {
-            const {rowSize, colSize, mineCount} = action.payload;
-            const newCells = setRandomMines(rowSize, colSize, mineCount);
+        createMines(state, action) {
+            const {level, thisKey} = action.payload;
+            const [rowSize, colSize, mineCount] = state.level
+            const newCells = setRandomMines(rowSize, colSize, mineCount, thisKey);
             state.cells = newCells;
+            state.level = level;
+            state.isInit = false;
         },
         cellClicked(state, action){
             const key = action.payload;
@@ -45,6 +53,6 @@ export const boardSlice = createSlice ({
     }
 })
 
-export const {createBoard, cellClicked, createDummy} = boardSlice.actions;
+export const {createMines, cellClicked, createDummy} = boardSlice.actions;
 
 export default boardSlice.reducer;

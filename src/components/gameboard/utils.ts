@@ -26,9 +26,11 @@ export const dummyMines = (row:number, col:number, mineCont: number) => {
     return obj;
 }
 
-export const setRandomMines = (row:number, col:number, mineCont: number) => { // 8*8, 16*16, 
-    let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
+export const setRandomMines = (row:number, col:number, mineCont: number, thisKey: string) => { // 8*8, 16*16, 
+    const thisIndex = thisKey.split(',').map(n=>{return parseInt(n)});   // 처음 클릭 인덱스. 이것을 피해서 mine생성해야 함.
+
     // map 생성
+    let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
             obj[`${i},${j}`] = {text:'', cellType:'closedCell', isFirst: true, state: 0} as Cell;
@@ -41,7 +43,9 @@ export const setRandomMines = (row:number, col:number, mineCont: number) => { //
     while(placedMines < mineCont){
         randomRow = Math.floor(Math.random() * row);
         randomCol = Math.floor(Math.random() * col);
-        if (obj[`${randomRow},${randomCol}`].state === 0){
+        if (randomRow !== thisIndex[0] && randomCol !== thisIndex[1] && 
+            obj[`${randomRow},${randomCol}`].state === 0)
+        {
             obj[`${randomRow},${randomCol}`].state = MINE;
             placedMines++;
         }

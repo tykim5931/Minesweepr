@@ -28,3 +28,8 @@ export const CELL_MARGIN = 2;
 
 
 export const MINE = -1;
+export const LEVEL = {
+	BEGINNER : [8,8,10],
+	INTERMEDIATE : [16,16,40],
+	EXPERT : [16,32,99]
+}

@@ -1,14 +1,10 @@
 import { OptionWrapper } from "../style";
-import {LEVEL} from '../../constants'
-import { connect, useDispatch, useSelector } from "react-redux";
+import { LEVEL } from '../../constants'
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { createDummy, setGameOver } from "../gameboard/boardSlice";
-import moment from 'moment';
+import { createDummy } from "../gameboard/boardSlice";
 import 'moment/locale/ko';
-import {useInterval} from 'react-use';
-
 import "../style.css"
-import { useState } from "react";
 
 
 const OptionBar = ({time}:{time:string})  => {
@@ -16,7 +12,7 @@ const OptionBar = ({time}:{time:string})  => {
   const boardObj = useSelector((state:RootState) => state.board)
 
   // GameOption
-  const onLevelChange = (e:any) => {
+  const onLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if(e.target.value === 'B') dispatch(createDummy(LEVEL.BEGINNER));
     else if(e.target.value === 'I') dispatch(createDummy(LEVEL.INTERMEDIATE));
     else if(e.target.value === 'E') dispatch(createDummy(LEVEL.EXPERT));
@@ -27,7 +23,7 @@ const OptionBar = ({time}:{time:string})  => {
     dispatch(createDummy(boardObj.level));  // reset Game
   }
   
-  let stateIcon
+  let stateIcon : '😄'|'😓'|'😶';
   if (boardObj.opened >= boardObj.level[0]*boardObj.level[1]-boardObj.level[2]) { 
     stateIcon = '😄';
   }

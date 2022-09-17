@@ -1,12 +1,4 @@
-import {MINE, EMPTYTEXT} from '../../constants'
-
-
-export interface Cell {
-    text: string,
-    cellType: string,
-    isFirst: boolean,
-    state: number,
-}
+import {MINE, EMPTYTEXT, CellText, Cell} from '../../constants'
 
 export const getCellValue = (obj:{[key:string]:Cell}, row:number, col:number) => {
     const key = `${row},${col}`
@@ -14,15 +6,12 @@ export const getCellValue = (obj:{[key:string]:Cell}, row:number, col:number) =>
     else return obj[key].state;
 }
 
-export const dummyMines = (row:number, col:number, mineCount: number) => {
+export const dummyMines = (row:number, col:number) => {
     // map 생성
-    let count = 0
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
-        for (let j=0; j<col; j++){
-            obj[`${i},${j}`] = {text:EMPTYTEXT, cellType:'closedCell', isFirst: true, state: 0} as Cell;
-            count++;
-        }
+        for (let j=0; j<col; j++)
+            obj[`${i},${j}`] = {text:EMPTYTEXT, cellType:'closedCell', state: 0} as Cell;
     }
     return obj;
 }
@@ -33,7 +22,7 @@ export const setRandomMines = (row:number, col:number, mineCount: number, thisKe
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
         for (let j=0; j<col; j++){
-            obj[`${i},${j}`] = {text:EMPTYTEXT, cellType:'closedCell', isFirst: true, state: 0} as Cell;
+            obj[`${i},${j}`] = {text:EMPTYTEXT, cellType:'closedCell', state: 0} as Cell;
         }
     }
 
@@ -77,7 +66,7 @@ export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: num
 
         if (cellObj[key].state > 0){
             cellObj[key].cellType = 'openedCell';
-            cellObj[key].text = String(cellObj[key].state);
+            cellObj[key].text = String(cellObj[key].state) as CellText;
             opened++;
         }
         // if cell state == 0 : open all related cells without mines

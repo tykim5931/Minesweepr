@@ -1,7 +1,5 @@
-import React, { Component, useState } from "react";
-import { Container } from "../style";
-import {MINE} from '../../constants'
-import { connect, useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { CellContainer , BoardContainer} from "../style";
 import { cellClicked, createMines, toggleFlag, setStartTime, setGameOver} from "./boardSlice";
@@ -19,7 +17,7 @@ const Board = () => {
   const boardObj = useSelector((state:RootState) => state.board)
   let nowTime = boardObj.startTime;
 
-  const onCellClicked = (e:any) => {
+  const onCellClicked = (e:React.MouseEvent<HTMLDivElement>) => {
     if(boardObj.gameEnd === true) {
       // inform that game has ended, do nothing.
       nowTime = seconds; // stop timer
@@ -27,15 +25,15 @@ const Board = () => {
     }
     if(boardObj.isInit === true) {
       dispatch(setStartTime(seconds)); // set game started time!
-      dispatch(createMines({level: boardObj.level, thisKey: e.target.id}));
+      dispatch(createMines({level: boardObj.level, thisKey: (e.target as HTMLButtonElement).id}));
     }
-    dispatch(cellClicked( e.target.id ));
+    dispatch(cellClicked( (e.target as HTMLButtonElement).id ));
   }
 
-  const onFlagSet = (e:any) => {
+  const onFlagSet = (e:React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if(boardObj.isInit === true || boardObj.gameEnd === true) return;
-    const key = e.target.id;
+    const key = (e.target as HTMLButtonElement).id;
     if (boardObj.cells[key].cellType === 'openedCell') return;
     else dispatch(toggleFlag( key ));
   }

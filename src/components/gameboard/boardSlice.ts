@@ -1,28 +1,12 @@
-import {createSlice, nanoid} from "@reduxjs/toolkit"
-import {dummyMines, setRandomMines, getCellValue, setClickedCells} from "./utils";
-import {LEVEL, EMPTYTEXT} from '../../constants'
+import {createSlice} from "@reduxjs/toolkit"
+import {dummyMines, setRandomMines, setClickedCells} from "./utils";
+import {LEVEL, EMPTYTEXT, BoardProps} from '../../constants'
 
-interface Cell {
-    text: string,
-    cellType: string,
-    isFirst: boolean,
-    state: number,
-}
-interface BoardProps {
-    isInit: boolean,
-    level: number[],
-    opened: number,
-    cells: {[key:string]:Cell},
-    gameEnd: boolean,
-    startTime: number,
-    gameOverTime: number,
-    flagCount: number,
-}
 const initialState: BoardProps= {
     isInit: true,
     level: LEVEL.BEGINNER,
     opened: 0,
-    cells: dummyMines(8, 8, 10), //setRandomMines(8, 8, 10),
+    cells: dummyMines(8, 8),
     gameEnd: false,
     startTime: 0,
     gameOverTime: 0,
@@ -36,7 +20,7 @@ export const boardSlice = createSlice ({
         createDummy(state, action){
             state.level = action.payload;
             const [rowSize, colSize, mineCount] = state.level
-            const newCells = dummyMines(rowSize, colSize, mineCount);
+            const newCells = dummyMines(rowSize, colSize);
             state.cells = newCells;
             state.gameEnd = false;
             state.isInit = true;

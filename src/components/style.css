@@ -24,9 +24,17 @@ p{
 .timer{
     font-weight: bold;
 }
-select{
-    position:fixed;
-}
 option{
     position:fixed;
+}
+.blockItems{
+    display: inline-block;
+    width: 40px;
+    justify-content: flex-start;
+}
+#flagCountText{
+    height: fit-content;
+    line-height: 0%;
+    width:100px;
+    text-align: start;
 }

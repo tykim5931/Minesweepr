@@ -14,7 +14,7 @@ export const getCellValue = (obj:{[key:string]:Cell}, row:number, col:number) =>
     else return obj[key].state;
 }
 
-export const dummyMines = (row:number, col:number, mineCont: number) => {
+export const dummyMines = (row:number, col:number, mineCount: number) => {
     // map 생성
     let count = 0
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
@@ -27,9 +27,8 @@ export const dummyMines = (row:number, col:number, mineCont: number) => {
     return obj;
 }
 
-export const setRandomMines = (row:number, col:number, mineCont: number, thisKey: string) => { // 8*8, 16*16, 
-    const thisIndex = thisKey.split(',').map(n=>{return parseInt(n)});   // 처음 클릭 인덱스. 이것을 피해서 mine생성해야 함.
-
+export const setRandomMines = (row:number, col:number, mineCount: number, thisKey: string) => { // 8*8, 16*16, 
+   
     // map 생성
     let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
     for (let i=0; i<row; i++){
@@ -39,17 +38,13 @@ export const setRandomMines = (row:number, col:number, mineCont: number, thisKey
     }
 
     // mineCount 만큼의 지뢰를 random 좌표에 뿌림.
-    let placedMines = 0;
-    let randomRow, randomCol;
-    while(placedMines < mineCont){
-        randomRow = Math.floor(Math.random() * row);
-        randomCol = Math.floor(Math.random() * col);
-        if (randomRow !== thisIndex[0] && randomCol !== thisIndex[1] && 
-            obj[`${randomRow},${randomCol}`].state === 0)
-        {
-            obj[`${randomRow},${randomCol}`].state = MINE;
-            placedMines++;
-        }
+    const keyList = Object.keys(obj).filter(item => item !== thisKey) // 지뢰 배치할 key list.
+    const mineList = []
+    while(keyList.length >= row*col-mineCount){
+        let mineKey = keyList.splice(Math.floor(Math.random() * keyList.length),1)[0];
+        mineList.push(mineKey);
+        obj[mineKey].state = MINE;
+        console.log(mineList.length)
     }
 
     // MineMap 설정

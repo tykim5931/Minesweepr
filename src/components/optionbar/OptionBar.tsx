@@ -36,15 +36,15 @@ const OptionBar = ({time}:{time:string})  => {
 
   return (
       <OptionWrapper rowCount={boardObj.level[1]}>
-          <p>Level</p>
+        <div className="blockItems">          
           <select onChange={(e) =>onLevelChange(e)}>
             <option value='B'>Beginner</option>
             <option value='I'>Intermediate</option>
             <option value='E'>Expert</option>
           </select>
-        
+          <p id="flagCountText">{`🚩${boardObj.flagCount}/${boardObj.level[2]}`}</p>
+        </div>
         <p className="stateIcon" onClick={onClickIcon}>{stateIcon}</p>
-
         <p className="timer">{time}</p>
       </OptionWrapper>
   );

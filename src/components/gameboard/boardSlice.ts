@@ -16,6 +16,7 @@ interface BoardProps {
     gameEnd: boolean,
     startTime: number,
     gameOverTime: number,
+    flagCount: number,
 }
 const initialState: BoardProps= {
     isInit: true,
@@ -25,6 +26,7 @@ const initialState: BoardProps= {
     gameEnd: false,
     startTime: 0,
     gameOverTime: 0,
+    flagCount:0,
 };
 
 export const boardSlice = createSlice ({
@@ -41,6 +43,7 @@ export const boardSlice = createSlice ({
             state.opened = 0;
             state.startTime= 0;
             state.gameOverTime= 0;
+            state.flagCount = 0;
         },
         createMines(state, action) {
             const {level, thisKey} = action.payload;
@@ -66,8 +69,14 @@ export const boardSlice = createSlice ({
         },
         toggleFlag(state, action){
             const key = action.payload;
-            if(state.cells[key].text === EMPTYTEXT) state.cells[key].text = '🚩';
-            else state.cells[key].text = EMPTYTEXT
+            if(state.cells[key].text === EMPTYTEXT) {
+                state.cells[key].text = '🚩';
+                state.flagCount++;
+            }
+            else {
+                state.cells[key].text = EMPTYTEXT;
+                state.flagCount--;
+            }
         },
         setStartTime(state, action){
             state.startTime = action.payload;

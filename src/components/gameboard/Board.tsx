@@ -92,6 +92,13 @@ const Board = () => {
       if(nowMinute > 60){
         dispatch(setGameOver(Date.now()))
       }
+      if (boardObj.opened >= boardObj.level[0]*boardObj.level[1]-boardObj.level[2]) { 
+        // game winning
+        // if opened >= row*col - mines
+        console.log("Game over!")
+        console.log(boardObj.opened)
+        dispatch(setGameOver(Date.now()))
+      }
       return `${fillZero(2, String(nowMinute))}:${fillZero(2, String(nowSec))}`
     }
   }

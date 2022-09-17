@@ -26,11 +26,13 @@ const OptionBar = ({time}:{time:string})  => {
   const onClickIcon = () => {
     dispatch(createDummy(boardObj.level));  // reset Game
   }
-  let stateIcon = boardObj.gameEnd? '😓': '😶';
-  if (boardObj.opened >= boardObj.level[0]*boardObj.level[1]-boardObj.level[2]-1) { // if opened >= row*col - mines
-    dispatch(setGameOver(Date.now()))
+  
+  let stateIcon
+  if (boardObj.opened >= boardObj.level[0]*boardObj.level[1]-boardObj.level[2]) { 
     stateIcon = '😄';
   }
+  else if (boardObj.gameEnd) stateIcon = '😓';
+  else stateIcon = '😶';
 
   return (
       <OptionWrapper rowCount={boardObj.level[1]}>

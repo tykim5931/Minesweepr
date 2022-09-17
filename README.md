@@ -1,5 +1,5 @@
 ## Minesweeper
-지뢰찾기 게임(http://freeminesweeper.org/minecore.html)을 구현해 본 프로젝트이다. React, Redux, Typescript 기반으로 작성되었다.
+지뢰찾기 게임(http://freeminesweeper.org/minecore.html) 을 구현해 본 프로젝트이다. React, Redux, Typescript 기반으로 작성되었다.
 
 
 ### Install & Execute

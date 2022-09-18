@@ -11,7 +11,7 @@ export const CELL_MARGIN = 2;
 export const MINE = -1;
 export const EMPTYTEXT = "\u00a0";
 export const LEVEL = {
-	BEGINNER : [8,8,10],
+	BEGINNER : [8,8,4],
 	INTERMEDIATE : [16,16,40],
 	EXPERT : [16,32,99]
 }

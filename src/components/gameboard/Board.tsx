@@ -27,7 +27,6 @@ const Board = () => {
     }
     // click 일반 동작
     dispatch(cellClicked( clickedCellKey ));
-    console.log(boardObj.gameEnd)
     // 게임 종료조건
     if (isGameEnd({level:boardObj.level, opened:boardObj.opened}, boardObj.cells[clickedCellKey].state)) {  
       dispatch(setGameOver(Date.now()))

@@ -46,8 +46,6 @@ function getTimeString(startTime:number, endTime:number){   // change time to ti
     const nowSecs = Math.round((endTime - startTime) / 1000);
     const nowMinute = Math.max(Math.floor(nowSecs / 60),0);
     const nowSec = Math.max(Math.round(nowSecs % 60),0);
-    console.log(nowSecs)
-    console.log(nowMinute)
     if(nowMinute > 60) return undefined;
     return `${fillZero(2, String(nowMinute))}:${fillZero(2, String(nowSec))}`;
 }

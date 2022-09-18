@@ -41,13 +41,19 @@ export const boardSlice = createSlice ({
             const key = action.payload as CellKey;
             const {cellObj, opened} = setClickedCells(state.cells, key, state.opened);
             state.cells = cellObj;
-            if(opened < 0) {    // game over!
-                state.gameEnd = true;
-                return
-            }
+
+            const [rowSize, colSize, mineCount] = state.level
             let openedCount = 0;
             for (const [key, obj] of Object.entries(cellObj)){
                 if(obj.cellType === 'openedCell') openedCount++;
+            }
+            
+            if(opened < 0) {    // game over!
+                state.gameEnd = true;
+                return
+            }else if (openedCount >= rowSize*colSize-mineCount) { // game clear!
+                state.gameEnd = true;
+                state.gameOverTime =Date.now()
             }
             state.opened = openedCount;
         },

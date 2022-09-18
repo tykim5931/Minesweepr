@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { CellContainer , BoardContainer} from "../style";
@@ -6,36 +5,47 @@ import { cellClicked, createMines, toggleFlag, setStartTime, setGameOver} from "
 
 import OptionBar from "../optionbar/OptionBar";
 import 'moment/locale/ko';
-import {useInterval} from 'react-use';
 
 import "../style.css"
+import { BoardProps, CellKey, CellState, createMineProp, MINE } from "../../constants";
 
 
 const Board = () => {
   const dispatch = useDispatch()
 
+  // ================== board Rendering ====================
   const boardObj = useSelector((state:RootState) => state.board)
-  let nowTime = boardObj.startTime;
 
+  // ==================== Event Handler ==========================
   const onCellClicked = (e:React.MouseEvent<HTMLDivElement>) => {
-    if(boardObj.gameEnd === true) {
-      // inform that game has ended, do nothing.
-      nowTime = seconds; // stop timer
-      return;
+    const clickedCellKey = (e.target as HTMLButtonElement).id as CellKey;
+    // 특수 조건 처리
+    if(boardObj.gameEnd) return;  // not on game mode
+    else if(boardObj.isInit === true) {  // game start, set mine map
+      dispatch(setStartTime(Date.now()));
+      dispatch(createMines({level: boardObj.level, thisKey: clickedCellKey} as createMineProp));
     }
-    if(boardObj.isInit === true) {
-      dispatch(setStartTime(seconds)); // set game started time!
-      dispatch(createMines({level: boardObj.level, thisKey: (e.target as HTMLButtonElement).id}));
+    // click 일반 동작
+    dispatch(cellClicked( clickedCellKey ));
+    console.log(boardObj.gameEnd)
+    // 게임 종료조건
+    if (isGameEnd({level:boardObj.level, opened:boardObj.opened}, boardObj.cells[clickedCellKey].state)) {  
+      dispatch(setGameOver(Date.now()))
     }
-    dispatch(cellClicked( (e.target as HTMLButtonElement).id ));
   }
 
   const onFlagSet = (e:React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if(boardObj.isInit === true || boardObj.gameEnd === true) return;
-    const key = (e.target as HTMLButtonElement).id;
-    if (boardObj.cells[key].cellType === 'openedCell') return;
-    else dispatch(toggleFlag( key ));
+    if(boardObj.isInit === true || boardObj.gameEnd === true){  // not on game mode 
+      return;
+    }
+
+    const clickedCellKey = (e.target as HTMLButtonElement).id as CellKey;
+    if (boardObj.cells[clickedCellKey].cellType === 'openedCell'){ // no flag on opened Key
+      return;
+    } else {
+      dispatch(toggleFlag( clickedCellKey ));
+    }
   }
 
   // align Cells
@@ -51,65 +61,35 @@ const Board = () => {
       return (
         <CellContainer 
           id={key} 
-          className={boardObj.cells[key].cellType}
+          className={boardObj.cells[key as CellKey].cellType}
           key={key}
           onClick={onCellClicked}
           onContextMenu={onFlagSet}
         >
-          {boardObj.cells[key].text}
+          {boardObj.cells[key as CellKey].text}
         </CellContainer>
       )
     })
   }
 
 
-  // Timer
-  const [seconds, setSeconds] = useState(Date.now());
-  useInterval(() => {
-    setSeconds(Date.now());
-  }, 1000);
-
-  function fillZero(width:number, str:string){  // time formatter
-    return str.length >= width ? str:new Array(width-str.length+1).join('0')+str;
-  }
-  const getPlayTime = () => {
-    if (boardObj.opened===0){ // game has not started yet!
-      return "00:00";
-    }
-    
-    if (boardObj.gameEnd === true){
-      const nowSecs = Math.round((boardObj.gameOverTime - boardObj.startTime) / 1000);
-      const nowMinute = Math.round(nowSecs / 60);
-      const nowSec = Math.round(nowSecs % 60);
-      return `${fillZero(2, String(nowMinute))}:${fillZero(2, String(nowSec))}`
-    }
-    else{
-      const nowSecs = Math.round((seconds - boardObj.startTime) / 1000);
-      const nowMinute = Math.round(nowSecs / 60);
-      const nowSec = Math.round(nowSecs % 60);
-      if(nowMinute > 60){
-        dispatch(setGameOver(Date.now()))
-      }
-      if (boardObj.opened >= boardObj.level[0]*boardObj.level[1]-boardObj.level[2]) { 
-        // game winning
-        // if opened >= row*col - mines
-        console.log("Game over!")
-        console.log(boardObj.opened)
-        dispatch(setGameOver(Date.now()))
-      }
-      return `${fillZero(2, String(nowMinute))}:${fillZero(2, String(nowSec))}`
-    }
-  }
-
-   
   return (
     <div>
-      <OptionBar time={getPlayTime()}></OptionBar>
+      <OptionBar></OptionBar>
       <BoardContainer rowCount={boardObj.level[1]}>
           {renderObj()}
       </BoardContainer>
     </div>
   );
 };
+
+function isGameEnd (gameInfo : Pick<BoardProps,'opened'|'level'>, clickedCellState:CellState) {
+  const openedCellCount = gameInfo.opened;
+  const [row, col, minecount] = gameInfo.level;
+  if (openedCellCount >= row*col - minecount || clickedCellState === MINE) { // game clear!
+    return true;
+  }
+  return false;
+}
 
 export default Board;

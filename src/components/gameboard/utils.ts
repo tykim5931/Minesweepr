@@ -1,7 +1,7 @@
-import {MINE, EMPTYTEXT, CellText, Cell} from '../../constants'
+import {MINE, EMPTYTEXT, CellText, CellObj, Cell, CellKey} from '../../constants'
 
-export const getCellValue = (obj:{[key:string]:Cell}, row:number, col:number) => {
-    const key = `${row},${col}`
+export const getCellValue = (obj : CellObj, row:number, col:number) => {
+    const key = `${row},${col}` as CellKey
     if(obj[key] === undefined) return 'out-of-range';
     else return obj[key].state;
 }
@@ -16,15 +16,8 @@ export const dummyMines = (row:number, col:number) => {
     return obj;
 }
 
-export const setRandomMines = (row:number, col:number, mineCount: number, thisKey: string) => { // 8*8, 16*16, 
-   
-    // map 생성
-    let obj: {[key:string]:Cell} = {};   // minemap. will be held in utils file
-    for (let i=0; i<row; i++){
-        for (let j=0; j<col; j++){
-            obj[`${i},${j}`] = {text:EMPTYTEXT, cellType:'closedCell', state: 0} as Cell;
-        }
-    }
+export const setRandomMines = (row:number, col:number, mineCount: number, thisKey: string) => {
+    let obj = dummyMines(row, col)
 
     // mineCount 만큼의 지뢰를 random 좌표에 뿌림.
     const keyList = Object.keys(obj).filter(item => item !== thisKey) // 지뢰 배치할 key list.
@@ -33,7 +26,6 @@ export const setRandomMines = (row:number, col:number, mineCount: number, thisKe
         let mineKey = keyList.splice(Math.floor(Math.random() * keyList.length),1)[0];
         mineList.push(mineKey);
         obj[mineKey].state = MINE;
-        console.log(mineList.length)
     }
 
     // MineMap 설정
@@ -44,7 +36,8 @@ export const setRandomMines = (row:number, col:number, mineCount: number, thisKe
                 for(let ii=-1; ii<=1; ii++){
                     for(let jj=-1; jj<=1; jj++){
                       if(ii!==0 || jj!==0){ // 자신 제외
-                        if(getCellValue(obj, i+ii,j+jj) !== MINE && getCellValue(obj, i+ii,j+jj) !== 'out-of-range'){
+                        if(getCellValue(obj, i+ii,j+jj) !== MINE && 
+                            getCellValue(obj, i+ii,j+jj) !== 'out-of-range'){
                           obj[`${i+ii},${j+jj}`].state++;
                         }
                       }
@@ -56,7 +49,7 @@ export const setRandomMines = (row:number, col:number, mineCount: number, thisKe
     return obj;
 }
 
-export const setClickedCells = (obj:{[key:string]:Cell}, key:string, opened: number) => {
+export const setClickedCells = (obj:CellObj, key:CellKey, opened: number) => {
     const cellObj = obj;
     const row = parseInt(key.split(',')[0], 10);
     const col = parseInt(key.split(',')[1], 10);

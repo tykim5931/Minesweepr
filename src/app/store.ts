@@ -3,7 +3,6 @@ import boardReducer from '../components/gameboard/boardSlice'
 
 export const store = configureStore({
   reducer: {
-    // counter: counterReducer,
     board: boardReducer,
   },
 });

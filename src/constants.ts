@@ -17,9 +17,16 @@ export const LEVEL = {
 }
 
 // Types
-type CellState = -1|0|1|2|3|4|5|6|7|8;
+export type CellState = -1|0|1|2|3|4|5|6|7|8;
 export type CellText = "\u00a0" |'🔥'|'🚩'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'; 
 type CellType = "openedCell"|"closedCell";
+export type CellKey = `${number},${number}`
+export type CellObj = {[key:CellKey]:Cell};
+
+export interface createMineProp{
+	level: number[], 
+	thisKey: CellKey,
+}
 
 // Cell Interface
 export interface Cell {
@@ -33,7 +40,7 @@ export interface BoardProps {
     isInit: boolean,		// indicates if game is started or not
     level: number[],		// game Level [row, col, mineCount]
     opened: number,			// number of opened Cells
-    cells: {[key:string]:Cell},	// key: 좌표(`$row,$col`) value: Cell object
+    cells: {[key:CellKey]:Cell},	// key: 좌표(`$row,$col`) value: Cell object
     gameEnd: boolean,		// indicates if game has ended. (true when game over or game clear)
     startTime: number,		// start time of game
     gameOverTime: number,	// end time of game

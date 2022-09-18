@@ -5,9 +5,10 @@ import { RootState } from "../../app/store";
 import { createDummy } from "../gameboard/boardSlice";
 import 'moment/locale/ko';
 import "../style.css"
+import Timer from "./Timer";
 
 
-const OptionBar = ({time}:{time:string})  => {
+const OptionBar = ()  => {
   const dispatch = useDispatch()
   const boardObj = useSelector((state:RootState) => state.board)
 
@@ -41,7 +42,7 @@ const OptionBar = ({time}:{time:string})  => {
           <p id="flagCountText">{`🚩${boardObj.flagCount}/${boardObj.level[2]}`}</p>
         </div>
         <p className="stateIcon" onClick={onClickIcon}>{stateIcon}</p>
-        <p className="timer">{time}</p>
+        <Timer></Timer>
       </OptionWrapper>
   );
 };

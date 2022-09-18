@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit"
 import {dummyMines, setRandomMines, setClickedCells} from "./utils";
-import {LEVEL, EMPTYTEXT, BoardProps} from '../../constants'
+import {LEVEL, EMPTYTEXT, BoardProps, createMineProp, CellKey} from '../../constants'
 
 const initialState: BoardProps= {
     isInit: true,
@@ -30,7 +30,7 @@ export const boardSlice = createSlice ({
             state.flagCount = 0;
         },
         createMines(state, action) {
-            const {level, thisKey} = action.payload;
+            const {level, thisKey} = action.payload as createMineProp;
             const [rowSize, colSize, mineCount] = state.level
             const newCells = setRandomMines(rowSize, colSize, mineCount, thisKey);
             state.cells = newCells;
@@ -38,12 +38,12 @@ export const boardSlice = createSlice ({
             state.isInit = false;
         },
         cellClicked(state, action){
-            const key = action.payload;
+            const key = action.payload as CellKey;
             const {cellObj, opened} = setClickedCells(state.cells, key, state.opened);
             state.cells = cellObj;
-            if(opened < 0) {
+            if(opened < 0) {    // game over!
                 state.gameEnd = true;
-                state.gameOverTime = Date.now();
+                return
             }
             let openedCount = 0;
             for (const [key, obj] of Object.entries(cellObj)){

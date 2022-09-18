@@ -11,6 +11,7 @@ const Timer = ()  => {
     const dispatch = useDispatch()
     const boardObj = useSelector((state:RootState) => state.board)
 
+    // ============= Time Render =================
     const [seconds, setSeconds] = useState(Date.now());
     useInterval(() => {
         setSeconds(Date.now());
@@ -43,7 +44,7 @@ function fillZero(width:number, str:string){  // time formatter
 
 function getTimeString(startTime:number, endTime:number){   // change time to time format string
     const nowSecs = Math.round((endTime - startTime) / 1000);
-    const nowMinute = Math.floor(nowSecs / 60);
+    const nowMinute = Math.max(Math.floor(nowSecs / 60),0);
     const nowSec = Math.max(Math.round(nowSecs % 60),0);
     console.log(nowSecs)
     console.log(nowMinute)

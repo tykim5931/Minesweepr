@@ -48,15 +48,15 @@ const Board = () => {
     }
   }
 
-  // align Cells
+  // ======================== Render Each Cells ============================
   const renderObj = () => {
-    let cellarray = Object.keys(boardObj.cells).sort((a, b) => {
-      const [a_row, a_col] = a.split(",");
-      const [b_row, b_col] = b.split(",");
-      if(a_row !== b_row){
-        return parseInt(a_row,10) - parseInt(b_row);
-      } else return parseInt(a_col,10) - parseInt(b_col);
-    });
+    let cellarray = Object.keys(boardObj.cells).sort((a, b) => {  // sort cell by row, col
+        const [a_row, a_col] = a.split(",");
+        const [b_row, b_col] = b.split(",");
+        if(a_row !== b_row){
+          return parseInt(a_row,10) - parseInt(b_row);
+        } else return parseInt(a_col,10) - parseInt(b_col);
+    })
     return cellarray.map((key) => {
       return (
         <CellContainer 
@@ -71,8 +71,6 @@ const Board = () => {
       )
     })
   }
-
-
   return (
     <div>
       <OptionBar></OptionBar>
@@ -82,6 +80,7 @@ const Board = () => {
     </div>
   );
 };
+
 
 function isGameEnd (gameInfo : Pick<BoardProps,'opened'|'level'>, clickedCellState:CellState) {
   const openedCellCount = gameInfo.opened;

@@ -17,7 +17,7 @@ export const boardSlice = createSlice ({
     name: 'board',
     initialState,
     reducers:{
-        createDummy(state, action){
+        initGameBoard(state, action){
             state.level = action.payload;
             const [rowSize, colSize, mineCount] = state.level
             const newCells = dummyMines(rowSize, colSize);
@@ -72,6 +72,6 @@ export const boardSlice = createSlice ({
     }
 })
 
-export const {createMines, cellClicked, createDummy, toggleFlag, setStartTime, setGameOver} = boardSlice.actions;
+export const {createMines, cellClicked, initGameBoard, toggleFlag, setStartTime, setGameOver} = boardSlice.actions;
 
 export default boardSlice.reducer;
